@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import Group
 from .forms import CommentForm
 from .models import Comment
 
 def home(request):
+    is_admin = request.user.is_authenticated and request.user.groups.filter(name='администраторы').exists()
     comments = Comment.objects.all().order_by('-created_at') if request.user.is_authenticated else []
     form = CommentForm() if request.user.is_authenticated else None
+    extra_content = "Административный контент" if is_admin else ""
     
     if request.method == 'POST' and request.user.is_authenticated:
         form = CommentForm(request.POST)
@@ -18,7 +21,8 @@ def home(request):
     
     return render(request, 'comments/home.html', {
         'form': form,
-        'comments': comments
+        'comments': comments,
+        'extra_content': extra_content
     })
 
 def register(request):

@@ -1,40 +1,31 @@
-{% if user.is_authenticated %}
-<li class="nav-item user-dropdown">
-    <span class="user-name text-white">Дороу, {{ user.username }}</span>
-    <div class="user-dropdown-content">
-        <a href="#">Личный кабинет</a>
-        <a href="{% url 'logout' %}" class="text-danger">Выйти</a>
-    </div>
-</li>
-{% else %}
-<li class="nav-item">
-    <a class="nav-link text-white" href="{% url 'register' %}">Регистрация</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link text-white" href="{% url 'login' %}">Авторизация</a>
-</li>
-{% endif %}
+{% extends 'comments/base.html' %}
 
-
-
-{% if user.is_authenticated %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Добавить комментарий</button>
-    </form>
-{% endif %}
-
-<h3>Комментарии:</h3>
-{% if comments %}
-<ul>
-    {% for comment in comments %}
-        <li>
-            <strong>{{ comment.user.username }}</strong> - {{ comment.created_at }}:
-            <p>{{ comment.text }}</p>
-        </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>авторизуйтесь что бы оставить или просмотреть комментарии</p>
-{% endif %}
+{% block content %}
+    <h1>Главная страница</h1>
+    
+    {% if user.is_authenticated %}
+        <p>Добро пожаловать, {{ user.username }}!</p>
+        <a href="{% url 'logout' %}">Выйти</a>
+        
+        <h2>Комментарии</h2>
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment.user }}: {{ comment.text }} ({{ comment.created_at }})</li>
+            {% endfor %}
+        </ul>
+        
+        <h2>Добавить комментарий</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+        
+        {% if extra_content %}
+            <h2>Административный раздел</h2>
+            <p>{{ extra_content }}</p>
+        {% endif %}
+    {% else %}
+        <p>Вы не авторизованы.</p>
+    {% endif %}
+{% endblock %}
