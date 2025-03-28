@@ -2,25 +2,23 @@
 
 {% block content %}
     <h1>Главная страница</h1>
-    
-    {% if user.is_authenticated %}
-        <p>Добро пожаловать, {{ user.username }}!</p>
-        <a href="{% url 'logout' %}">Выйти</a>
-        
-        <h2>Комментарии</h2>
-        <ul>
-            {% for comment in comments %}
-                <li>{{ comment.user }}: {{ comment.text }} ({{ comment.created_at }})</li>
+
+    <div class="container">
+      <div class="row">
+            {% for tovar in tovars%}
+                <div class="container p-3 mb-3 rounded col-auto" style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 5px;">
+                    <h2>{{ tovar.name }}</h2>
+                    <img src="{{ tovar.image.url }}" alt="{{ tovar.name }}" style="max-width: 200px; max-height: 200px;">
+                    <p>{{ tovar.description }}</p>
+                    <p>Цена: {{ tovar.price }} руб.</p>
+                    <a href="{% url 'tovar_detail' tovar.id %}" class="btn btn-primary">Подробнее</a>
+                </div>
             {% endfor %}
-        </ul>
-        
-        <h2>Добавить комментарий</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Отправить</button>
-        </form>
-        
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+        </div>
         {% if extra_content %}
             <h2>Административный раздел</h2>
             <p>{{ extra_content }}</p>

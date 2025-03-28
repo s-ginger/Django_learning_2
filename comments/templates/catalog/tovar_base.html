@@ -1,0 +1,46 @@
+{% extends "comments/base.html" %}
+
+
+
+{% block title %}
+Товар {{ tovar.name }}
+{% endblock %}
+
+{% block content %}
+    <img src="{{ tovar.image.url }}" alt="{{ tovar.name }}" style="max-width: 200px; max-height: 200px;">
+    <h1>{{ tovar.name }}</h1>
+    
+    <p>{{ tovar.description }}</p>
+    <p>Цена: {{ tovar.price }} руб.</p>
+
+    {% if user.is_authenticated %}
+        <div>
+            {% if user.is_authenticated %}
+                <h2>Ваш отзыв</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Отправить">
+                </form>
+            {% endif %}
+        </div>
+    {% else %}
+        <h1>Авторизуйтесь или Зарегистрируйтесь чтобы писать отзывы</h1>
+    {% endif %}
+
+    {% for review in reviews %}
+        <div class="container p-3 mb-3 rounded col-auto" style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 5px;">
+            <h2>{{ review.user.username }}</h2>
+            <p>{{ review.text }}</p>
+            <p>Дата: {{ review.created_at }}</p>
+        </div>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <h2>Административный раздел</h2>
+        <p>{{ extra_content }}</p>
+    {% else %}
+        <p>Вы не авторизованы.</p>
+    {% endif %}
+{% endblock content %}
+
