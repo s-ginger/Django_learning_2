@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import Group
-from .forms import CommentForm, ReviewForm
-from .models import Comment, Tovars, Review
+from .forms import ReviewForm
+from .models import Tovars, Review
+
 
 def tovar_detail(request, tovar_id):
     
@@ -27,9 +28,7 @@ def tovar_detail(request, tovar_id):
 
 def home(request):
     is_admin = request.user.is_authenticated and request.user.groups.filter(name='администраторы').exists()
-    comments = Comment.objects.all().order_by('-created_at') if request.user.is_authenticated else []
     all_tovars = Tovars.objects.all()
-    form = CommentForm() if request.user.is_authenticated else None
     extra_content = "Административный контент" if is_admin else ""
     
     '''if request.method == 'POST' and request.user.is_authenticated:
@@ -42,7 +41,6 @@ def home(request):
     
     
     return render(request, 'comments/home.html', {
-        'form': form,
         'tovars': all_tovars,
         'extra_content': extra_content
     })
