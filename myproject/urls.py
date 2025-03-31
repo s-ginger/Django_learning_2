@@ -11,6 +11,7 @@ urlpatterns = [
     path('tovar/<int:tovar_id>/', views.tovar_detail, name='tovar_detail'),
     path('', views.home, name='home'),
     path('logout/', views.logout_view, name='logout'),
+    path('profile/', views.profile, name='profile'),
 ]
 
 

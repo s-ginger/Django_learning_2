@@ -1,0 +1,30 @@
+{% extends 'comments/base.html' %}
+
+{% block title %}user.last_name{% endblock title %}
+
+{% block content %}
+   
+    <h1>Профиль пользователя</h1>
+    <h1>{{ user.username }}</h1>
+
+    
+    <h2>
+        Ваши отзывы:
+    </h2>
+
+    <p>
+        {% for review in reviews %}
+            <div class="container p-3 mb-3 rounded col-auto" style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 5px;">
+                <h2>{{ review.tovar.name }}</h2>
+                <p>{{ review.text }}</p>
+                <p>Дата: {{ review.created_at }}</p>
+            </div>
+        {% endfor %}
+    </p>
+
+ 
+        <!--<h1>Вы не авторизованы.</h1>
+        <h2><span><a href="register">Зарегистрируйтесь</a></span> или  <span><a href="login">Войдите в аккаунт</a></span></h2>
+   -->
+
+{% endblock content %}

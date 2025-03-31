@@ -9,7 +9,6 @@
                 <div class="container p-3 m-4 rounded col-3" style="background-color: #f9f9f9; border: 1px solid #ccc; border-radius: 5px;">
                     <h2>{{ tovar.name }}</h2>
                     <img src="{{ tovar.image.url }}" alt="{{ tovar.name }}" style="max-width: 100px; max-height: 100px;">
-                    <p>{{ tovar.description }}</p>
                     <p>Цена: {{ tovar.price }} руб.</p>
                     <a href="{% url 'tovar_detail' tovar.id %}" class="btn btn-primary">Подробнее</a>
                 </div>

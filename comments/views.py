@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import Group
 from .forms import ReviewForm
 from .models import Tovars, Review
-
+from django.contrib.auth.decorators import login_required
 
 def tovar_detail(request, tovar_id):
     
@@ -26,18 +26,16 @@ def tovar_detail(request, tovar_id):
         'reviews': Review.objects.filter(product=tovar).order_by('-created_at'),  
         })
 
+@login_required
+def profile(request):
+    reviews = Review.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'comments/profile.html', {'reviews': reviews})
+    
+
 def home(request):
     is_admin = request.user.is_authenticated and request.user.groups.filter(name='администраторы').exists()
-    all_tovars = Tovars.objects.all()
+    all_tovars = Tovars.objects.all()[:10]
     extra_content = "Административный контент" if is_admin else ""
-    
-    '''if request.method == 'POST' and request.user.is_authenticated:
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.save()
-            return redirect('home')'''
     
     
     return render(request, 'comments/home.html', {
