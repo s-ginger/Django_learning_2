@@ -11,6 +11,7 @@
                     <img src="{{ tovar.image.url }}" alt="{{ tovar.name }}" style="max-width: 100px; max-height: 100px;">
                     <p>Цена: {{ tovar.price }} руб.</p>
                     <a href="{% url 'tovar_detail' tovar.id %}" class="btn btn-primary">Подробнее</a>
+                    <a href="{% url 'add_to_cart' tovar.id %}" class="btn btn-success">В корзину</a>
                 </div>
             {% endfor %}
         </div>

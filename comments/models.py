@@ -10,9 +10,27 @@ class Tovars(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=100, decimal_places=2)
     image = models.ImageField(upload_to='products/', null=True, blank=True)
-
+    count = models.IntegerField(default=0)
+    
     def __str__(self):
         return f"{self.name} - {self.price}"
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Tovars, through='CartItem')
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return f"Cart of {self.user.username} - {self.created_at}"
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ForeignKey(Tovars, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    
+    def __str__(self):
+        return f"Item {self.user.username} - {self.products.name} - {self.quantity}"
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

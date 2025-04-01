@@ -1,8 +1,21 @@
 {% extends 'comments/base.html' %}
 
-{% block title %}{% endblock title %}
+{% block title %}
+Cart user.username
+{% endblock title %}
 
 {% block content %}
+    <h1>Ваша корзина</h1>
+    {% if cart_items %}
+        {% for items in cart_items %}
+            <h2>{{ items }}</h2>
+        {% endfor %}
+    {% else %}
+
+        <p>Ваша корзина пуста.</p>
+    {% endif %}
+
+    
 
 {% endblock content %}
 
