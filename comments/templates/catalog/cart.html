@@ -8,8 +8,12 @@ Cart user.username
     <h1>Ваша корзина</h1>
     {% if cart_items %}
         {% for items in cart_items %}
-            <h2>{{ items }}</h2>
+            <div class="container p-3 m-4 border border-dark">
+                <img src="{{ items.products.image.url }}" alt="{{ items.product.name }}" style="max-width: 50px; max-height: 50px;">
+                <h2>{{ items.products.name }}, количество: {{ items.quantity }}, цена: {{ items.products.price }} руб.</h2>
+            </div>
         {% endfor %}
+        <h2>Полная цена:{{ total_price }} руб.</h2>
     {% else %}
 
         <p>Ваша корзина пуста.</p>

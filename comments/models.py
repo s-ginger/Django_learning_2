@@ -17,7 +17,7 @@ class Tovars(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Tovars, through='CartItem')
+    #products = models.ManyToManyField(Tovars, through='CartItem')
     created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):

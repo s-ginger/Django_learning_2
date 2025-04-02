@@ -34,8 +34,9 @@ def profile(request):
 @login_required
 def Cart_page(request):
     items = CartItem.objects.filter(user=request.user)  # Получаем все товары в корзине
-    
-    return render(request, 'catalog/cart.html', {'cart_items': items})
+    total_price = sum(item.products.price * item.quantity for item in items)  # Считаем общую стоимость
+    return render(request, 'catalog/cart.html', {'cart_items': items, 'total_price': total_price})
+
 
 @login_required
 def add_to_cart(request, tovar_id):
